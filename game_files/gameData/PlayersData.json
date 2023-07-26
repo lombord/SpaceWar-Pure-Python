@@ -1,0 +1,14 @@
+{
+    "Lombord": {
+        "easy": 1,
+        "medium": 0,
+        "hard": 0,
+        "veryHard": 0,
+        "unreal": 0,
+        "settings": {
+            "fWidth": 5,
+            "fHeight": 5,
+            "gameMode": "easy"
+        }
+    }
+}
