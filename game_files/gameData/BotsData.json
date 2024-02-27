@@ -1,6 +1,18 @@
 {
     "EasyBot": {
         "wins": 0,
-        "losses": 1
+        "losses": 2
+    },
+    "MediumBot": {
+        "wins": 1,
+        "losses": 0
+    },
+    "HardBot": {
+        "wins": 0,
+        "losses": 0
+    },
+    "UnrealBot": {
+        "wins": 1,
+        "losses": 0
     }
 }

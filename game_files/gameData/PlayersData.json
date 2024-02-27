@@ -10,5 +10,29 @@
             "fHeight": 5,
             "gameMode": "easy"
         }
+    },
+    "lombord": {
+        "easy": 1,
+        "medium": 0,
+        "hard": 0,
+        "veryHard": 0,
+        "unreal": -1,
+        "settings": {
+            "fWidth": 12,
+            "fHeight": 12,
+            "gameMode": "unreal"
+        }
+    },
+    "Yusup": {
+        "easy": 0,
+        "medium": -1,
+        "hard": 0,
+        "veryHard": 0,
+        "unreal": 0,
+        "settings": {
+            "fWidth": 12,
+            "fHeight": 12,
+            "gameMode": "medium"
+        }
     }
 }

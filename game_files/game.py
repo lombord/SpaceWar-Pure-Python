@@ -78,7 +78,7 @@ class Game:
         gM = f'{gM[0].upper()}{gM[1:]}Bot'
         try:
             self.bot: PlayerBase = self.bots[gM]
-        except:
+        except Exception:
             self.bot: PlayerBase = self._gameModes[self.settings.gameMode]()
             self.bots.savePlayer(self.bot)
 

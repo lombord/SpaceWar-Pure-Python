@@ -1,5 +1,5 @@
 from itertools import product as prod
-from weakref import WeakSet as wset, WeakValueDictionary as wValDict, ref
+from weakref import WeakSet as wset, WeakValueDictionary as WValDict, ref
 
 
 from .cells import BorderCell, ShipCell
@@ -14,7 +14,7 @@ class Ship:
         self._field = ref(field)
         self.num = num
         self.botRef = None
-        self.shipCells: wValDict[int, ShipCell] = wValDict()
+        self.shipCells: WValDict[int, ShipCell] = WValDict()
         self.borderCells: wset[BorderCell] = wset()
         self.__setShip(field)
 
@@ -23,33 +23,32 @@ class Ship:
         return self._field()
 
     def __getShipCoords(self):
-        """get correct corrds for the ship"""
+        """get valid coordinates for the ship"""
+        field = self.field
+        width, height = field.width, field.height
         bX, bY = self.x - 1, self.y - 1
+        xSize, ySize = [3, self.size + 2][:: (-1) * (-1 * self.isVertical or 1)]
+        xStart, xEnd = max(bX, 0), min(bX + xSize, width)
+        yStart, yEnd = max(bY, 0), min(bY + ySize, height)
         if self.isVertical:
-            xEnd, yEnd = bX + 3, bY + self.size + 2
             shipX, shipY = self.x, slice(self.y, self.y + self.size)
         else:
-            xEnd, yEnd = bX + self.size + 2, bY + 3
             shipX, shipY = slice(self.x, self.x + self.size), self.y
-        return bX, bY, xEnd, yEnd, shipX, shipY
+        return xStart, yStart, xEnd, yEnd, shipX, shipY
 
     def __setShip(self, field):
         """set ship on the field"""
-        bX, bY, xEnd, yEnd, shipX, shipY = self.__getShipCoords()
-        xEnd = xEnd if xEnd <= field.width else field.width
-        yEnd = yEnd if yEnd <= field.height else field.height
+        xStart, yStart, xEnd, yEnd, shipX, shipY = self.__getShipCoords()
 
-        for x, y in prod(range(bX, xEnd), range(bY, yEnd)):
-            if x >= 0 and y >= 0:
-                if not field[y, x]:
-                    field[y, x] = BorderCell()
-                self.borderCells.add(field[y, x])
+        for x, y in prod(range(xStart, xEnd), range(yStart, yEnd)):
+            if not field[y, x]:
+                field[y, x] = BorderCell()
+            self.borderCells.add(field[y, x])
 
-        field[shipY, shipX] = [ShipCell(self, num, field._hidden)
-                               for num in range(self.size)]
+        shipCells = [ShipCell(self, num, field._hidden) for num in range(self.size)]
+        field[shipY, shipX] = shipCells
 
-        self.shipCells.update((num, cell) for num, cell in
-                              enumerate(field[shipY, shipX]))
+        self.shipCells.update((num, cell) for num, cell in enumerate(shipCells))
 
     def checkAlive(self, number):
         del self.shipCells[number]
@@ -71,7 +70,3 @@ class Ship:
 
     def __bool__(self):
         return bool(self.shipCells)
-
-
-if __name__ == '__main__':
-    pass
